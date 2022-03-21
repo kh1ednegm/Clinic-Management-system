@@ -15,9 +15,12 @@ mongoose.connect("mongodb://localhost:27017/CMS").then(()=>{
 }).catch((error)=>{
     console.log("Conncetion faild")
 })
+mongoose.Promise=global.Promise;
 
 server.use(morgan(":url :method"))
 server.use(bodyParser.json())
+
+server.use('/api',require('./Routes/DoctorRoute'));
 
 server.use((error,request,response,next)=>{
 
