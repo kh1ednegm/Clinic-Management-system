@@ -3,9 +3,15 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require("mongoose")
 
-const server = express()
 
+const LoginRoute = require('./Routes/LoginRoute')
+const DoctorRoute = require('./Routes/DoctorRoute')
+
+
+
+const server = express()
 const PORT = process.env.PORT || 8080;
+
 
 mongoose.connect("mongodb://localhost:27017/CMS").then(()=>{
     console.log("Connected to DB")
@@ -15,12 +21,23 @@ mongoose.connect("mongodb://localhost:27017/CMS").then(()=>{
 }).catch((error)=>{
     console.log("Conncetion faild")
 })
+
 mongoose.Promise=global.Promise;
 
 server.use(morgan(":url :method"))
 server.use(bodyParser.json())
 
-server.use('/api',require('./Routes/DoctorRoute'));
+
+server.use('',LoginRoute)
+
+
+server.use('/api',DoctorRoute);
+
+
+
+
+
+
 
 server.use((error,request,response,next)=>{
 

@@ -10,7 +10,7 @@ const Users = require('../Models/UserModel')
 
 
 
-exports = async (request,response,next)=>{
+module.exports = async (request,response,next)=>{
 
     let errors = validationResult(request)
     let error = new Error()
@@ -22,7 +22,6 @@ exports = async (request,response,next)=>{
     }
     else{
       let user = await Users.findOne({email:request.body.email})
-
       if (!user) {
         return  response.status(400).send({
                     message:"Invalid email or password"
