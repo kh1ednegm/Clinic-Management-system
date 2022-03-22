@@ -6,5 +6,8 @@ const Employee = new mongoose.Schema({
     gender:{type:String,enum:["m","f"],required:true},
     address:{type:String},
     phoneno:{type:Number,required:true},
-    emop_role:{type:string},
+    emop_role:{type:String,enum:['reception', 'worker', 'nurse'],required:true},
 })
+
+
+module.exports = mongoose.model('Employee',Employee)

@@ -6,7 +6,7 @@ const Appointment = require('../Models/AppointmentModel')
 
 
 
-exports.getAppointmentsByDoctorId = async (request,response)=>{
+exports.getAppointmentsByDoctorId = async (request,response,next)=>{
 
     try{
         let body = request.body
@@ -15,15 +15,17 @@ exports.getAppointmentsByDoctorId = async (request,response)=>{
             return response.status(200).send({message:"OK",data:appointments})
         }
         else{
-            return response.status(400).send({error:"No data"})
+            const err = new Error("No Appointments")
+            err.status = 400
+            next(err)
         }
     }
     catch(err){
-        return response.status(400).send({error:"No data"})
+        return response.status(400).send({error:err.message})
     }
 }
 // ممكن تمسحها
-exports.getAppointmentsByClinicLocation = async (request,response)=>{
+exports.getAppointmentsByClinicLocation = async (request,response,next)=>{
     
     try{
         let body = request.body
@@ -32,7 +34,9 @@ exports.getAppointmentsByClinicLocation = async (request,response)=>{
             return response.status(200).send({message:"OK",data:appointments})
         }
         else{
-            return response.status(400).send({error:"No data"})
+            const err = new Error("No Appointments")
+            err.status = 400
+            next(err)
         }
     }
     catch(err){
@@ -41,12 +45,12 @@ exports.getAppointmentsByClinicLocation = async (request,response)=>{
 }
 
 
-exports.createAppointment = async (request,response)=>{
+exports.createAppointment = async (request,response,next)=>{
 
 
     try{
         let body = request.body
-        let appointment = new Appointment({
+        let newAppointment = await Appointment.create({
             patient_id:body.patient_id,
             Patinet_name:body.Patinet_name,
             doctor_id:body.doctor_id,
@@ -55,13 +59,14 @@ exports.createAppointment = async (request,response)=>{
             clinic_location:body.clinic_location
         })
 
-        let newAppointment = await appointment.save()
-
         if(newAppointment){
             return response.status(200).send({ message: "OK" });
         }
         else{
-            return response.status(400).send({ error: "Faild to save the appointment" });
+            const err = new Error("Faild to save the appointment")
+            err.status = 400
+            next(err)
+            
         }
     }
     catch(err){
@@ -70,8 +75,48 @@ exports.createAppointment = async (request,response)=>{
 }
 
 
-exports.editAppointment = async (request,response)=>{
+exports.editAppointment = async (request,response,next)=>{
+
+    let body = request.body
+    try{
+        let appointment = await Appointment.findOneAndUpdate({_id:body._id},{
+            patient_id : body.patient_id,
+            Patinet_name : body.Patinet_name,
+            doctor_id : body.doctor_id,
+            doctor_name : body.doctor_name,
+            date : body.date,
+            clinic_location : body.clinic_location
+        })
+        
+        if(appointment){
+            response.status(200).send({message:"OK"})
+        }
+        else{
+            const err = new Error("Appointment is Not Found")
+            err.status = 400
+            next(err)
+        }
+    }
+    catch(err){
+        response.status(400).send({error:err.message})
+    }
+}
+
+exports.DeleteAppointment = async (request,response,next)=>{
 
 
-    
+    try {
+        let body = request.body
+
+        let appointment = await Appointment.findOneAndDelete({_id:body._id})
+        if(appointment){
+            response.status(200).send({message:"OK"})
+        }
+        else{
+            response.status(400).send({error:"Appointment is Not Found"})
+        }
+
+    } catch (err) {
+        response.status(400).send({error:err.message})
+    }
 }

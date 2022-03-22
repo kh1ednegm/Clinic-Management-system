@@ -6,7 +6,8 @@ const mongoose = require("mongoose")
 
 const LoginRoute = require('./Routes/LoginRoute')
 const DoctorRoute = require('./Routes/DoctorRoute')
-
+const AppointmentRoute = require('./Routes/AppointmentRoute')
+const EmployeeRoute = require('./Routes/EmployeeRoute')
 
 
 const server = express()
@@ -33,14 +34,14 @@ server.use('',LoginRoute)
 
 server.use('/api',DoctorRoute);
 
+server.use('/api',AppointmentRoute)
 
-
-
+server.use('/employee',EmployeeRoute)
 
 
 
 server.use((error,request,response,next)=>{
 
     error.status = error.status || 500
-    response.status(error.status).send(""+error)
+    response.status(error.status).send(""+error.message)
 })

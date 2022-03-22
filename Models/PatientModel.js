@@ -8,7 +8,7 @@ const Patient = new mongoose.Schema({
     gender:{type:String,enum:["m","f"],required:true},
     address:{type:String},
     phoneno:{type:Number,required:true},
-    email:{type:String,lowercase:true},
+    email:{type:String},
     medication:[{
         prescription_id:{type:string}
     }]

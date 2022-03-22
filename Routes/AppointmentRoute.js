@@ -14,4 +14,9 @@ router.get('/appointmentsByLocation',auth.checkDoctor,(request,response)=>{
 })
 
 
+router.put('/update',AppointmentController.editAppointment)
+router.delete('/delete',AppointmentController.DeleteAppointment)
+
+
+
 module.exports = router

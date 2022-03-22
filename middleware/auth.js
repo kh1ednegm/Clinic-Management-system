@@ -23,7 +23,7 @@ exports.checkReception = async (request, response,next)=>{
         let token = await request.get("Authorization").replace("Bearer ", "")
         let payload = jwt.verify(await token, "jwttoken");
 
-        if(payload.userType != "reception"){
+        if(payload.userType != "receptionist"){
             return response.status(400).send({error:"Unauthorized request"})
         }
     }
