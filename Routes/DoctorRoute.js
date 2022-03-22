@@ -7,7 +7,7 @@ const auth = require('../middleware/auth')
 
 
 //Add a new Doctor
-router.post('/doctor/add',(req,res)=>{
+router.post('/doctor/add',auth.checkAdmin,(req,res)=>{
     DoctorController.AddDoctor(req,res)
 });
 
@@ -32,16 +32,6 @@ router.get('/doctor/all',(request,response)=>{
 router.put('/doctor/edit',(request,response)=>{
     DoctorController.EditDoctor(request,response)
 })
-//,auth.checkAdmin
-/*{
-    "_id": "6238a48bbd9dca7904058899"
-    "name":"Ahmed Hamdy",
-    "birthday":"5/5/1999",
-    "gender":"m",
-    "address":"Assiut",
-    "phoneno":1027866191,
-    "specialisation":"Diabates",
-    "email":"fairytailuzumaki2@gmail.com",
-    "password":"Kirito1151999"
-}*/
+//
+
 module.exports= router;
