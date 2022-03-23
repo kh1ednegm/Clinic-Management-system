@@ -10,7 +10,9 @@ exports.getAppointmentsByDoctorId = async (request,response,next)=>{
 
     try{
         let body = request.body
-        let appointments = await Appointment.find({doctor_id:body.doctor_id,date:{$gte:body.date}}).sort({date:1})
+        let f = new Date(body.date)
+        f.setHours(26)
+        let appointments = await Appointment.find({doctor_id:body.doctor_id,date:{$gte:body.date,$lte:new Date(f).toISOString()}}).sort({date:1})
         if(appointments.length > 0){
             return response.status(200).send({message:"OK",data:appointments})
         }
@@ -25,11 +27,12 @@ exports.getAppointmentsByDoctorId = async (request,response,next)=>{
     }
 }
 // ممكن تمسحها
-exports.getAppointmentsByClinicLocation = async (request,response,next)=>{
+exports.getAppointmentsForAMonth = async (request,response,next)=>{
     
     try{
         let body = request.body
-        let appointments = await Appointment.find({doctor_id:body.doctor_id, clinic_location:body.clinic_location, date:{$gte:body.date}}).sort({date:1})
+        
+        let appointments = await Appointment.find({doctor_id:body.doctor_id, date:{$gte:body.date}}).sort({date:1})
         if(appointments.length > 0){
             return response.status(200).send({message:"OK",data:appointments})
         }

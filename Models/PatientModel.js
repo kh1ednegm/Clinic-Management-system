@@ -10,7 +10,7 @@ const Patient = new mongoose.Schema({
     phoneno:{type:Number,required:true},
     email:{type:String},
     medication:[{
-        prescription_id:{type:string}
+        prescription_id:{type:mongoose.Types.ObjectId}
     }]
 })
 
