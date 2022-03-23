@@ -32,6 +32,5 @@ router.get('/doctor/all',(request,response)=>{
 router.put('/doctor/edit',(request,response)=>{
     DoctorController.EditDoctor(request,response)
 })
-//
 
 module.exports= router;

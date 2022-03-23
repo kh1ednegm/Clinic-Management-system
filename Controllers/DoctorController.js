@@ -8,15 +8,28 @@ const bcrypt = require('bcrypt');
 //Add Doctor
 exports.AddDoctor = async (request, response) => {
     try {
-        console.log("Iam here")
+        var image = fs.readFileSync(request.file.path);
+        var encode_image = image.toString('base64');
+        // Define a JSONobject for the image attributes for saving to database
+  
+        var finalImage = {
+            contentType: request.file.mimetype,
+            image: Buffer(encode_image, 'base64')
+        };
+
         let doctor = await Doctor.create({
             'name': request.body['name'],
             'birthday': request.body['birthday'],
             'gender': request.body['gender'],
             'address': request.body['address'],
             'phoneno': request.body['phoneno'],
-            'specialisation': request.body['specialisation']
+            'specialisation': request.body['specialisation'],
+            'image':finalImage
         })
+        
+    if (err) return console.log(err)
+ 
+    console.log('saved to database')
         const salt = await bcrypt.genSalt(10);
         const hashedpassword = await bcrypt.hash(request.body['password'], salt);
         let user = await User.create({
@@ -59,6 +72,7 @@ exports.GetDoctorByID = async (request,response)=>{
     try {
         let doctor = await Doctor.findById(request.body._id)
         if(doctor){
+            doctor['imagePath']=doctor['image'].image.buffer;
             response.status(200).send({message:"OK",data:doctor})
         }
         else{
