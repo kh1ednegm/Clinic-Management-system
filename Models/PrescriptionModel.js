@@ -6,14 +6,11 @@ const Prescription = new mongoose.Schema({
 
     patient_id:{type:string,required:true},
     doctor_id:{type:string,required:true},
-    complaint: { type: String},
-    notes:{type:string},
+    diagnosis: { type: String},
     date:{type:Date},
     medication:[{
         _id:false,
-        medicine_name:{type:String},
-        days:{type:Number},
-        quantity:{type:Number}
+        name:{type:String}, 
     }]
 })
 

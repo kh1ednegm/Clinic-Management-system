@@ -7,7 +7,7 @@ const auth = require('../middleware/auth')
 
 
 //Add a new Doctor
-router.post('/doctor/add',auth.checkAdmin,(req,res)=>{
+router.post('/doctor/add',(req,res)=>{
     DoctorController.AddDoctor(req,res)
 });
 

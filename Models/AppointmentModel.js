@@ -6,7 +6,7 @@ const Appointment = new mongoose.Schema({
     Patinet_name:{type:String,required:true},
     doctor_id:{type:String,required:true},
     doctor_name:{type:String,required:true},
-    date:{type:Date,required:true,unique:true},
+    date:{type:Date,required:true},
     clinic_location:{type:String,required:true}
 })
 

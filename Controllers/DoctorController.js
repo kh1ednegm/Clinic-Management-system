@@ -1,14 +1,17 @@
 const mongoose = require('mongoose')
+const fs = require('fs');
+const bcrypt = require('bcrypt');
+
+
 
 const Doctor = require('../Models/DoctorModel');
 const User = require('../Models/UserModel');
-const bcrypt = require('bcrypt');
 
 
 //Add Doctor
 exports.AddDoctor = async (request, response) => {
     try {
-        var image = fs.readFileSync(request.file.path);
+        var image = fs.readFileSync(request.body.image);
         var encode_image = image.toString('base64');
         // Define a JSONobject for the image attributes for saving to database
   
@@ -27,27 +30,42 @@ exports.AddDoctor = async (request, response) => {
             'image':finalImage
         })
         
-    if (err) return console.log(err)
- 
-    console.log('saved to database')
-        const salt = await bcrypt.genSalt(10);
-        const hashedpassword = await bcrypt.hash(request.body['password'], salt);
-        let user = await User.create({
-            'email': request.body['email'],
-            'password': hashedpassword,
-            'userType': 'doctor',
-            'UserID': doctor._id,
-        })
-        if (user) {
-            response.status(200).send({ message: "OK" })
+        if(doctor){
+            console.log('saved to database')
+            const salt = await bcrypt.genSalt(10);
+            const hashedpassword = await bcrypt.hash(request.body['password'], salt);
+            let user = await User.create({
+                'email': request.body['email'],
+                'password': hashedpassword,
+                'userType': 'doctor',
+                'UserID': doctor._id,
+            })
+
+            if (user) {
+                response.status(200).send({ message: "OK" })
+                }
+            else {
+                response.status(400).send({ error: "Faild" })
+            }
+
         }
-        else {
+
+        else{
+
             response.status(400).send({ error: "Faild" })
         }
     } catch (err) {
-        response.status(400).send({ error: "Faild" })
+        response.status(401).send({ error: err.message })
     }
 }
+
+
+
+
+
+
+
+
 
 //Delete Doctor
 exports.DeleteDoctor = async (request,response)=>{

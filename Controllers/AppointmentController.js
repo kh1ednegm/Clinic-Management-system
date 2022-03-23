@@ -53,23 +53,34 @@ exports.createAppointment = async (request,response,next)=>{
 
     try{
         let body = request.body
-        let newAppointment = await Appointment.create({
-            patient_id:body.patient_id,
-            Patinet_name:body.Patinet_name,
+
+        let oldAppointment = await Appointment.findOne({
             doctor_id:body.doctor_id,
-            doctor_name:body.doctor_name,
-            date:body.date,
-            clinic_location:body.clinic_location
+            data:body.date
         })
 
-        if(newAppointment){
-            return response.status(200).send({ message: "OK" });
+        if(oldAppointment){
+            return response.status(400).send({error:"Can't assign more than one appointment for a doctor at the same time"})
         }
         else{
-            const err = new Error("Faild to save the appointment")
-            err.status = 400
-            next(err)
-            
+            let newAppointment = await Appointment.create({
+                patient_id:body.patient_id,
+                Patinet_name:body.Patinet_name,
+                doctor_id:body.doctor_id,
+                doctor_name:body.doctor_name,
+                date:body.date,
+                clinic_location:body.clinic_location
+            })
+    
+            if(newAppointment){
+                return response.status(200).send({ message: "OK" });
+            }
+            else{
+                const err = new Error("Faild to save the appointment")
+                err.status = 400
+                next(err)
+                
+            }
         }
     }
     catch(err){

@@ -9,9 +9,7 @@ const Patient = new mongoose.Schema({
     address:{type:String},
     phoneno:{type:Number,required:true},
     email:{type:String},
-    medication:[{
-        prescription_id:{type:mongoose.Types.ObjectId}
-    }]
+    
 })
 
 
