@@ -4,8 +4,8 @@ const { stringify } = require('nodemon/lib/utils')
 
 const Prescription = new mongoose.Schema({
 
-    patient_id:{type:string,required:true},
-    doctor_id:{type:string,required:true},
+    patient_id:{type:String,required:true},
+    doctor_id:{type:String,required:true},
     diagnosis: { type: String},
     date:{type:Date},
     medication:[{

@@ -9,6 +9,7 @@ const DoctorRoute = require('./Routes/DoctorRoute')
 const AppointmentRoute = require('./Routes/AppointmentRoute')
 const EmployeeRoute = require('./Routes/EmployeeRoute')
 const PatinetRoute = require('./Routes/PatientRoute')
+const PrescriptionRoute=require('./Routes/PrescriptionRoute')
 
 const server = express()
 const PORT = process.env.PORT || 8080;
@@ -32,7 +33,7 @@ server.use(bodyParser.json())
 server.use('',LoginRoute)
 
 
-server.use('/api',DoctorRoute);
+server.use('/doctor',DoctorRoute);
 
 server.use('/appointment',AppointmentRoute)
 
@@ -40,7 +41,9 @@ server.use('/employee',EmployeeRoute)
 
 server.use('/patient',PatinetRoute)
 
+server.use('/prescription',PrescriptionRoute)
 
+//"623b6bf0b966a872b34e655d"
 
 server.use((error,request,response,next)=>{
     error.status = error.status || 500
