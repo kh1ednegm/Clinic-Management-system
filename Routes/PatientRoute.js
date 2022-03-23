@@ -28,3 +28,6 @@ router.put('/edit',(request,response,next)=>{
 router.delete('/delete',(request,response,next)=>{
     PatientController.DeletePatient(request,response,next)
 })
+
+
+module.exports = router
