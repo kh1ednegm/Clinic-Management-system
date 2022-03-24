@@ -8,10 +8,13 @@ router.post('/add',(request,response)=>{
     AppointmentController.createAppointment(request,response)
 })
 
-router.get('/forADay',(request,response)=>{
+router.post('/forADay',(request,response)=>{
     AppointmentController.getAppointmentsByDoctorId(request,response)
 })
 
+router.post('/month',(request,response)=>{
+    AppointmentController.checkMonthAppointmentsByDoctorId(request,response)
+})
 
 router.get('/appointmentsByLocation',auth.checkDoctor,(request,response)=>{
     AppointmentController.getAppointmentsByClinicLocation(request,response)
