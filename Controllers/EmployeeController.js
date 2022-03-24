@@ -20,6 +20,7 @@ exports.AddEmployee = async (request,response,next)=>{
             address:body.address,
             phoneno:body.phoneno,
             emop_role:body.emop_role,
+            image:body.image
         })
     
         if(emp){
@@ -27,24 +28,29 @@ exports.AddEmployee = async (request,response,next)=>{
             if(body.emop_role == 'receptionist'){
 
                 let hashedpassword = await bcrypt.hash(body.password,await bcrypt.genSalt(10))
-                let user = await User.create({
-                    email:{type:String,require:true,unique:true},
-                    password:hashedpassword,
-                    userType:"receptionist",
-                    UserID:emp._id,
-                })
+                
+                try {
+                    
+                    let user = await User.create({
+                        email:body.email,
+                        password:hashedpassword,
+                        userType:"receptionist",
+                        UserID:emp._id,
+                    })
 
-                if(user)
+                    if(user)
                 {
                     response.status(200).send({message:"OK",data:emp})
                 }
-                else
-                {
+
+                } catch (e) {
+                    fs.unlinkSync(`images/${doctor.image}`)
                     await Employee.findByIdAndDelete(emp._id)
                     const err = new Error("Email is duplicated")
                     err.status = 400
                     next(err)
                 }
+                  
             }
 
             else
@@ -53,11 +59,6 @@ exports.AddEmployee = async (request,response,next)=>{
                 response.status(200).send({message:"OK",data:emp})
             }
             
-        }
-        else{
-            const err = new Error("Faild")
-            err.status = 400
-            next(err)
         }
 
 

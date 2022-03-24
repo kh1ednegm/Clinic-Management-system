@@ -1,24 +1,17 @@
 const mongoose = require('mongoose')
-const fs = require('fs');
 const bcrypt = require('bcrypt');
-
-
+const fs = require('fs')
 
 const Doctor = require('../Models/DoctorModel');
 const User = require('../Models/UserModel');
 
 
 //Add Doctor
-exports.AddDoctor = async (request, response) => {
+exports.AddDoctor = async (request, response,next) => {
+
+    
     try {
-        var image = fs.readFileSync(request.body.image);
-        var encode_image = image.toString('base64');
-        // Define a JSONobject for the image attributes for saving to database
-  
-        var finalImage = {
-            contentType: request.file.mimetype,
-            image: Buffer(encode_image, 'base64')
-        };
+        
 
         let doctor = await Doctor.create({
             'name': request.body['name'],
@@ -27,35 +20,34 @@ exports.AddDoctor = async (request, response) => {
             'address': request.body['address'],
             'phoneno': request.body['phoneno'],
             'specialisation': request.body['specialisation'],
-            'image':finalImage
+            'image':request.body['image']
         })
-        
         if(doctor){
-            console.log('saved to database')
-            const salt = await bcrypt.genSalt(10);
-            const hashedpassword = await bcrypt.hash(request.body['password'], salt);
-            let user = await User.create({
-                'email': request.body['email'],
-                'password': hashedpassword,
-                'userType': 'doctor',
-                'UserID': doctor._id,
-            })
 
-            if (user) {
-                response.status(200).send({ message: "OK" })
-                }
-            else {
-                response.status(400).send({ error: "Faild" })
+            let hashedpassword = await bcrypt.hash(request.body.password,await bcrypt.genSalt(10))
+            try {
+                let user = await User.create({
+                    'email': request.body['email'],
+                    'password': hashedpassword,
+                    'userType': 'doctor',
+                    'UserID': doctor._id,
+                })
+
+                if (user) {
+                    response.status(200).send({ message: "OK" })
+                    }
+
+            } catch (e) {
+                fs.unlinkSync(`images/${doctor.image}`)
+                await Doctor.findByIdAndDelete(doctor._id)
+                let err = new Error("Email already exists")
+                err.status = 400
+                next(err)
             }
-
         }
 
-        else{
-
-            response.status(400).send({ error: "Faild" })
-        }
     } catch (err) {
-        response.status(401).send({ error: err.message })
+        next(err)
     }
 }
 
@@ -68,7 +60,7 @@ exports.AddDoctor = async (request, response) => {
 
 
 //Delete Doctor
-exports.DeleteDoctor = async (request,response)=>{
+exports.DeleteDoctor = async (request,response,next)=>{
     try {
         let body = request.body
 
@@ -77,52 +69,52 @@ exports.DeleteDoctor = async (request,response)=>{
             response.status(200).send({message:"OK"})
         }
         else{
-            response.status(400).send({error:"Doctor is Not Found"})
+            let err = new Error("Doctor is Not Found")
+            err.status = 400
+            next(err)
         }
 
     } catch (err) {
-        response.status(400).send({error:"Failed"})
+        next(err)
     }
 }
 
 // Get Doctor by ID
-exports.GetDoctorByID = async (request,response)=>{
-    try {
+exports.GetDoctorByID = async (request,response,next)=>{
+
         let doctor = await Doctor.findById(request.body._id)
+
         if(doctor){
-            doctor['imagePath']=doctor['image'].image.buffer;
             response.status(200).send({message:"OK",data:doctor})
         }
         else{
-            response.status(400).send({error:"Doctor is Not Found"})
+            let err = new Error("Doctor is Not Found")
+            err.status = 400
+            next(err)
         }
-    } catch (err) {
-        response.status(400).send({error:"Failed"})
-    }
+
 }
 
 // GET all Doctors
-exports.GetAllDoctors = async (request,response)=>{
-    try {
+exports.GetAllDoctors = async (request,response,next)=>{
+
         let doctors = await Doctor.find({})
-        if(doctors){
+        if(doctors.length > 0){
             response.status(200).send({message:"OK",data:doctors})
         }
         else{
-            response.status(400).send({error:"Doctors Not Found"})
+            let err = new Error("There're no doctors")
+            err.status = 400
+            next(err)
         }
-    } catch (err) {
-        response.status(400).send({error:"Failed"})
-    }
+
 } 
 
 // Edit Employee
-exports.EditDoctor = async (request,response)=>{
+exports.EditDoctor = async (request,response,next)=>{
     try {
-        let doctor = await Doctor.findByIdAndUpdate({_id:request.body._id},{
+        let doctor = await Doctor.findByIdAndUpdate(request.body._id,{
             'name': request.body['name'],
-            'birthday': request.body['birthday'],
-            'gender': request.body['gender'],
             'address': request.body['address'],
             'phoneno': request.body['phoneno'],
             'specialisation': request.body['specialisation']
@@ -131,9 +123,11 @@ exports.EditDoctor = async (request,response)=>{
             response.status(200).send({message:"OK",data:doctor})
         }
         else{
-            response.status(400).send({error:"Doctors Not Found"})
+            let err = new Error("Doctor is Not Found")
+            err.status = 400
+            next(err)
         }
     } catch (err) {
-        response.status(400).send({error:"Failed"})
+        next(err)
     }
 }

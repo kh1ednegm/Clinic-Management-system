@@ -16,14 +16,14 @@ module.exports = async (request,response,next)=>{
     let error = new Error()
     if(!errors.isEmpty()){
         
-        error.status = 422
+        error.status = 400
         error.message = errors.array().reduce((current,object)=> current+object.msg+ ", ","");
         next(error)
     }
     else{
       let user = await Users.findOne({email:request.body.email})
       if (!user) {
-        return  response.status(400).send({
+        return  response.status(401).send({
                     message:"Invalid email or password"
                 })
       }
@@ -53,7 +53,7 @@ module.exports = async (request,response,next)=>{
     }
 
     else{
-          response.status(400).send({
+          response.status(401).send({
               message:"Invalid email or password"
           })
     } 

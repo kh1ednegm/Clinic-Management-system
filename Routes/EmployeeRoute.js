@@ -1,10 +1,28 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
+const path = require('path')
+
 
 const EmployeeController = require('../Controllers/EmployeeController')
 
 
-router.post('/add',(request,response,next)=>{
+const storage = multer.diskStorage({
+    destination:(request,file,cd)=>{
+        cd(null,"images")
+    },
+    filename: (request,file,cd)=>{
+       let fname = Date.now() + path.extname(file.originalname)
+       cd(null,fname)
+
+       request.body.image = fname
+    }
+
+})
+
+const upload = multer({storage:storage})
+
+router.post('/add', upload.single('image'),(request,response,next)=>{
     EmployeeController.AddEmployee(request,response,next)
 })
 

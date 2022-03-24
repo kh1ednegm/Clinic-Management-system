@@ -7,6 +7,7 @@ const Employee = new mongoose.Schema({
     address:{type:String},
     phoneno:{type:Number,required:true},
     emop_role:{type:String,enum:['reception', 'worker', 'nurse'],required:true},
+    image:{type:String}
 })
 
 

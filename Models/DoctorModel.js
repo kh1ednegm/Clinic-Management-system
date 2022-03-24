@@ -9,7 +9,7 @@ const Doctor = new mongoose.Schema({
     address:{type:String},
     phoneno:{type:Number,required:true},
     specialisation:{type:String,required:true},
-    image:{type:Buffer,required:true}
+    image:{type:String}
 })
 
 
