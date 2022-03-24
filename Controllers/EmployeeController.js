@@ -83,7 +83,7 @@ exports.EditEmployee = async (request,response,next)=>{
         })
 
         if (emp) {
-            response.status(200).response({message:"OK",data:emp})
+            response.status(200).send({message:"OK",data:emp})
         }
         else{
 

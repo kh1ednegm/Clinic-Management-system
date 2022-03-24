@@ -13,39 +13,39 @@ exports.getAppointmentsByDoctorId = async (request,response,next)=>{
         let f = new Date(body.date)
         f.setHours(26)
         let appointments = await Appointment.find({doctor_id:body.doctor_id,date:{$gte:body.date,$lte:new Date(f).toISOString()}}).sort({date:1})
-        if(appointments.length > 0){
-            return response.status(200).send({message:"OK",data:appointments})
-        }
-        else{
-            const err = new Error("No Appointments")
-            err.status = 400
-            next(err)
-        }
+        // if(appointments.length > 0){
+        return response.status(200).send({message:"OK",data:appointments})
+        // }
+        // else{
+        //     const err = new Error("No Appointments")
+        //     console.log("no appointment")
+        //     err.status = 400
+        //     next(err)
+        // }
     }
-    catch(err){
+    catch (err) {
+        return response.status(400).send({error:err.message})
+    }
+}
+
+exports.checkMonthAppointmentsByDoctorId = async (request,response,next)=>{
+    try{
+        let body = request.body
+        let monthDays = body.monthDays
+        for (let day = 0; day < monthDays.length; day++) {
+            let dayNformat=new Date(Date.parse(monthDays[day].date)).toLocaleDateString("en-CA", { year: 'numeric', month: 'numeric', day: 'numeric' })
+            let f = new Date(dayNformat)
+            f.setHours(26)
+            monthDays[day].status = await Appointment.exists({doctor_id:body.doctor_id,date:{$gte:dayNformat,$lte:new Date(f).toISOString()}})
+        }
+        return response.status(200).send({message:"OK",data:monthDays})
+    }
+    catch (err) {
+        console.log("errrrr")
         return response.status(400).send({error:err.message})
     }
 }
 // ممكن تمسحها
-exports.getAppointmentsForAMonth = async (request,response,next)=>{
-    
-    try{
-        let body = request.body
-        
-        let appointments = await Appointment.find({doctor_id:body.doctor_id, date:{$gte:body.date}}).sort({date:1})
-        if(appointments.length > 0){
-            return response.status(200).send({message:"OK",data:appointments})
-        }
-        else{
-            const err = new Error("No Appointments")
-            err.status = 400
-            next(err)
-        }
-    }
-    catch(err){
-        return response.status(400).send({error:"No data"})
-    }
-}
 
 
 exports.createAppointment = async (request,response,next)=>{

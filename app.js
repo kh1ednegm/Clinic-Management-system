@@ -9,7 +9,8 @@ const DoctorRoute = require('./Routes/DoctorRoute')
 const AppointmentRoute = require('./Routes/AppointmentRoute')
 const EmployeeRoute = require('./Routes/EmployeeRoute')
 const PatinetRoute = require('./Routes/PatientRoute')
-
+const PrescriptionRoute=require('./Routes/PrescriptionRoute')
+const cors =require("cors")
 const server = express()
 const PORT = process.env.PORT || 8080;
 
@@ -27,6 +28,7 @@ mongoose.connect("mongodb://localhost:27017/CMS").then(()=>{
     console.log("Conncetion faild")
 })
 
+server.use(cors())
 mongoose.Promise=global.Promise;
 
 server.use(morgan(":url :method"))
@@ -36,7 +38,7 @@ server.use(bodyParser.json())
 server.use('',LoginRoute)
 
 
-server.use('/api',DoctorRoute);
+server.use('/doctor',DoctorRoute);
 
 server.use('/appointment',AppointmentRoute)
 
@@ -44,9 +46,12 @@ server.use('/employee',EmployeeRoute)
 
 server.use('/patient',PatinetRoute)
 
+server.use('/prescription',PrescriptionRoute)
 
+//"623b6bf0b966a872b34e655d"
 
 server.use((error,request,response,next)=>{
     error.status = error.status || 500
     response.status(error.status).send("Iam here"+error.message)
+    // console.log("error")
 })
