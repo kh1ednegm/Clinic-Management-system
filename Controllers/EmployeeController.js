@@ -44,7 +44,7 @@ exports.AddEmployee = async (request,response,next)=>{
                 }
 
                 } catch (e) {
-                    fs.unlinkSync(`images/${doctor.image}`)
+                    fs.unlinkSync(`images/${emp.image}`)
                     await Employee.findByIdAndDelete(emp._id)
                     const err = new Error("Email is duplicated")
                     err.status = 400
