@@ -1,14 +1,12 @@
 
 
 
-const { body } = require('express-validator')
 const Appointment = require('../Models/AppointmentModel')
 
 
 
 exports.getAppointmentsByDoctorId = async (request,response,next)=>{
 
-    try{
         let body = request.body
         let f = new Date(body.date)
         f.setHours(26)
@@ -22,10 +20,6 @@ exports.getAppointmentsByDoctorId = async (request,response,next)=>{
         //     err.status = 400
         //     next(err)
         // }
-    }
-    catch (err) {
-        return response.status(400).send({error:err.message})
-    }
 }
 
 exports.checkMonthAppointmentsByDoctorId = async (request,response,next)=>{
@@ -119,7 +113,6 @@ exports.editAppointment = async (request,response,next)=>{
 exports.DeleteAppointment = async (request,response,next)=>{
 
 
-    try {
         let body = request.body
 
         let appointment = await Appointment.findOneAndDelete({_id:body._id})
@@ -127,10 +120,7 @@ exports.DeleteAppointment = async (request,response,next)=>{
             response.status(200).send({message:"OK"})
         }
         else{
-            response.status(200).send({message:"Appointment is Not Found"})
+            response.status(400).send({message:"Appointment is Not Found"})
         }
 
-    } catch (err) {
-        response.status(400).send({error:err.message})
-    }
 }
