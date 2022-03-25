@@ -45,7 +45,6 @@ server.use('/patient',PatinetRoute)
 
 server.use('/prescription',PrescriptionRoute)
 
-
 server.use((error,request,response,next)=>{
     error.status = error.status || 500
     response.status(error.status).send(error.message)

@@ -1,93 +1,42 @@
-const {check, validationResult} = require('express-validator');
+const Joi = require('joi');
 
-exports.validateDoctor = [
-    check('name')
-      .trim()
-      .escape()
-      .not()
-      .isEmpty()
-      .withMessage('User name can not be empty!')
-      .bail()
-      .isLength({min: 3})
-      .withMessage('Minimum 3 characters required!')
-      .bail()
-    ,
-    check('birthdate')
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage('Date can not be empty')
-      .bail()
-      .isDate()
-      .withMessage('Invalid Date!')
-      .bail()
-    ,
-    check('gender')
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage('Gender can not be empty')
-      .bail()
-      .enum(['m','f'])
-      .withMessage('Gender can not have values neither m or f')
-      .bail()
-    ,
-    check('address')
-      .trim()
-      .escape()
-      .not()
-      .isEmpty()
-      .withMessage('Address can not be empty!')
-      .bail()
-      .isLength({min: 10})
-      .withMessage('Minimum 10 characters required!')
-      .bail()
-    ,
-    check('phoneno')
-      .isEmpty()
-      .withMessage('Phone number can not be empty!')
-      .bail()
-      .isNumeric()
-      .withMessage('Invalid Phone Number')
-      .bail()
-      .min({min:10})
-      .withMessage('Phone number must be 10 numbers')
-      .bail()
-    ,
-    check('specialisation')
-      .trim()
-      .escape()
-      .not()
-      .isEmpty()
-      .withMessage('Specialisation can not be empty!')
-      .bail()
-      .isLength({min: 5})
-      .withMessage('Minimum 5 characters required!')
-      .bail()
-    ,
-    check('image')
-      .trim()
-      .escape()
-      .not()
-      .isEmpty()
-      .withMessage('Image can not be empty!')
-      .bail()
-      .isLength({min: 5})
-      .withMessage('Minimum 5 characters required!')
-      .bail()
-    ,
-    check('email')
-      .trim()
-      .normalizeEmail()
-      .not()
-      .isEmpty()
-      .isEmail()
-      .withMessage('Invalid email address!')
-      .bail(),
-    (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty())
-        return res.status(400).json({errors: errors.array()});
-      next();
-    },
-  ];
+module.exports = Joi.object({
+  name: Joi.string()
+    .min(3)
+    .max(30)
+    .required(),
+  birthday: Joi.date().min('1-1-1900')
+    .raw()
+    .required(),
+  gender: Joi.string().valid('m', 'M', 'f', 'F'),
+  address: Joi.string()
+    .min(8)
+    .max(50)
+    .required(),
+  phoneno: Joi.string().length(10).regex(/^\d+$/),
+  image:Joi
+  .string()
+  .custom((value, helper) => {
+      const values=['jpg','jpeg','jfif','pjpeg','pjp','png']
+      let isImage=false;
+      for(let i=0;i<value.length;i++){
+        if(value.split('.')[1]===values[i]){
+          isImage=true;
+        }
+      }
+      if (isImage) {
+        return true
+      } else {
+        return helper.message(`Not an Image`)
+      }
+  })
+,
+  specialisation: Joi.string()
+    .alphanum()
+    .min(6)
+    .max(30)
+    .required(),
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+  password: Joi.string().min(8).alphanum().required()
+});
