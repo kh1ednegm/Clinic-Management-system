@@ -1,0 +1,93 @@
+const {check, validationResult} = require('express-validator');
+
+exports.validateDoctor = [
+    check('name')
+      .trim()
+      .escape()
+      .not()
+      .isEmpty()
+      .withMessage('User name can not be empty!')
+      .bail()
+      .isLength({min: 3})
+      .withMessage('Minimum 3 characters required!')
+      .bail()
+    ,
+    check('birthdate')
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage('Date can not be empty')
+      .bail()
+      .isDate()
+      .withMessage('Invalid Date!')
+      .bail()
+    ,
+    check('gender')
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage('Gender can not be empty')
+      .bail()
+      .enum(['m','f'])
+      .withMessage('Gender can not have values neither m or f')
+      .bail()
+    ,
+    check('address')
+      .trim()
+      .escape()
+      .not()
+      .isEmpty()
+      .withMessage('Address can not be empty!')
+      .bail()
+      .isLength({min: 10})
+      .withMessage('Minimum 10 characters required!')
+      .bail()
+    ,
+    check('phoneno')
+      .isEmpty()
+      .withMessage('Phone number can not be empty!')
+      .bail()
+      .isNumeric()
+      .withMessage('Invalid Phone Number')
+      .bail()
+      .min({min:10})
+      .withMessage('Phone number must be 10 numbers')
+      .bail()
+    ,
+    check('specialisation')
+      .trim()
+      .escape()
+      .not()
+      .isEmpty()
+      .withMessage('Specialisation can not be empty!')
+      .bail()
+      .isLength({min: 5})
+      .withMessage('Minimum 5 characters required!')
+      .bail()
+    ,
+    check('image')
+      .trim()
+      .escape()
+      .not()
+      .isEmpty()
+      .withMessage('Image can not be empty!')
+      .bail()
+      .isLength({min: 5})
+      .withMessage('Minimum 5 characters required!')
+      .bail()
+    ,
+    check('email')
+      .trim()
+      .normalizeEmail()
+      .not()
+      .isEmpty()
+      .isEmail()
+      .withMessage('Invalid email address!')
+      .bail(),
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty())
+        return res.status(400).json({errors: errors.array()});
+      next();
+    },
+  ];

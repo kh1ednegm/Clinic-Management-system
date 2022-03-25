@@ -3,7 +3,6 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require("mongoose")
 
-
 const LoginRoute = require('./Routes/LoginRoute')
 const DoctorRoute = require('./Routes/DoctorRoute')
 const AppointmentRoute = require('./Routes/AppointmentRoute')
@@ -34,9 +33,7 @@ mongoose.Promise=global.Promise;
 server.use(morgan(":url :method"))
 server.use(bodyParser.json())
 
-
 server.use('',LoginRoute)
-
 
 server.use('/doctor',DoctorRoute);
 
@@ -48,10 +45,8 @@ server.use('/patient',PatinetRoute)
 
 server.use('/prescription',PrescriptionRoute)
 
-//"623b6bf0b966a872b34e655d"
 
 server.use((error,request,response,next)=>{
     error.status = error.status || 500
-    response.status(error.status).send("Iam here"+error.message)
-    // console.log("error")
+    response.status(error.status).send(error.message)
 })
