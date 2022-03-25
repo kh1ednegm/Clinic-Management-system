@@ -45,7 +45,6 @@ exports.checkMonthAppointmentsByDoctorId = async (request,response,next)=>{
         return response.status(400).send({error:err.message})
     }
 }
-// ممكن تمسحها
 
 
 exports.createAppointment = async (request,response,next)=>{
@@ -60,7 +59,7 @@ exports.createAppointment = async (request,response,next)=>{
         })
 
         if(oldAppointment){
-            return response.status(400).send({error:"Can't assign more than one appointment for a doctor at the same time"})
+            return response.status(200).send({error:"Can't assign more than one appointment for a doctor at the same time"})
         }
         else{
             let newAppointment = await Appointment.create({
@@ -69,7 +68,8 @@ exports.createAppointment = async (request,response,next)=>{
                 doctor_id:body.doctor_id,
                 doctor_name:body.doctor_name,
                 date:body.date,
-                clinic_location:body.clinic_location
+                clinic_location:body.clinic_location,
+                service_id:body.service_id
             })
     
             if(newAppointment){
@@ -107,7 +107,7 @@ exports.editAppointment = async (request,response,next)=>{
         }
         else{
             const err = new Error("Appointment is Not Found")
-            err.status = 400
+            err.status = 200
             next(err)
         }
     }
@@ -127,7 +127,7 @@ exports.DeleteAppointment = async (request,response,next)=>{
             response.status(200).send({message:"OK"})
         }
         else{
-            response.status(400).send({error:"Appointment is Not Found"})
+            response.status(200).send({message:"Appointment is Not Found"})
         }
 
     } catch (err) {

@@ -99,14 +99,14 @@ exports.GetDoctorByID = async (request,response,next)=>{
 exports.GetAllDoctors = async (request,response,next)=>{
 
         let doctors = await Doctor.find({})
-        if(doctors.length > 0){
+        if(doctors){
             response.status(200).send({message:"OK",data:doctors})
         }
-        else{
+       /* else{
             let err = new Error("There're no doctors")
             err.status = 400
             next(err)
-        }
+        }*/
 
 } 
 
@@ -120,7 +120,7 @@ exports.EditDoctor = async (request,response,next)=>{
             'specialisation': request.body['specialisation']
         })
         if (doctor) {
-            response.status(200).send({message:"OK",data:doctor})
+            response.status(200).send({message:"OK"})
         }
         else{
             let err = new Error("Doctor is Not Found")

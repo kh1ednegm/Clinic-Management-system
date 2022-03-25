@@ -51,6 +51,8 @@ router.get('/doctor/all',(request,response,next)=>{
     DoctorController.GetAllDoctors(request,response,next)
 })
 
+
+
 //Edit Doctor
 router.put('/doctor/edit',(request,response,next)=>{
     DoctorController.EditDoctor(request,response,next)
