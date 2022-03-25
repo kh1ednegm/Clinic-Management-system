@@ -4,12 +4,12 @@ const mongoose = require('mongoose')
 
 const Patient = new mongoose.Schema({
     name:{type:String,required:true},
-    birthday:{type:Date,required:true},
+    birthDate:{type:Date,required:true},
     gender:{type:String,enum:["m","f"],required:true},
     address:{type:String},
-    phoneno:{type:Number,required:true},
+    phoneNo:{type:Number,required:true},
     email:{type:String},
-    
+    image: {type: String}
 })
 
 
