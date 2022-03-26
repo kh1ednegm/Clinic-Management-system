@@ -17,7 +17,7 @@ module.exports = Joi.object({
   image:Joi
   .string()
   .custom((value, helper) => {
-      const values=['jpg','jpeg','jfif','pjpeg','pjp','png']
+      const values=['jpg','jpeg','jfif','pjpeg','pjp','png','webp','svg']
       let isImage=false;
       for(let i=0;i<value.length;i++){
         if(value.split('.')[1]===values[i]){

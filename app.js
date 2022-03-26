@@ -47,18 +47,9 @@ server.use('/patient',PatinetRoute)
 
 server.use('/prescription',PrescriptionRoute)
 
-<<<<<<< HEAD
-server.use((error,request,response,next)=>{
-    error.status = error.status || 500
-    response.status(error.status).send(error.message)
-=======
 server.use('/service',SericeRoute)
 
-//"623b6bf0b966a872b34e655d"
-
 server.use((error,request,response,next)=>{
     error.status = error.status || 500
     response.status(error.status).send(error.message)
-    // console.log("error")
->>>>>>> ef554329513bff619805633294d50049e7d1926a
 })
