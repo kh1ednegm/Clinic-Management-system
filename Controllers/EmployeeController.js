@@ -83,7 +83,7 @@ exports.EditEmployee = async (request,response,next)=>{
         })
 
         if (emp) {
-            response.status(200).send({message:"OK",data:emp})
+            response.status(200).send({message:"OK"})
         }
         else{
 
@@ -108,7 +108,14 @@ exports.DeleteEmployee = async (request,response,next)=>{
 
         let emp = await Employee.findByIdAndDelete(body._id)
         if(emp){
+            
+            if(emp.emop_role == "reception"){
+                await User.findOneAndDelete({UserID:emp._id})
+
+            }
+            
             response.status(200).send({message:"OK"})
+
         }
         else{
 
@@ -152,20 +159,7 @@ exports.GetEmployeeByID = async (request,response,next)=>{
 exports.GetAllEmployees = async (request,response,next)=>{
 
 
-    try {
-        let emps = await Employee.find({})
-
-        
-        if(emps){
-            response.status(200).send({message:"OK",data:emps})
-        }
-        else{
-            const err = new Error("There're no employees")
-            err.status = 400
-            next(err)
-        }
-
-    } catch (err) {
-        next(err)
-    }
+    let emps = await Employee.find({})
+  
+    response.status(200).send({message:"OK",data:emps})
 } 

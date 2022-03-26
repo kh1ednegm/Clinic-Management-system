@@ -11,11 +11,12 @@ exports.AddPatient = async (request,response,next)=>{
         
         let patient = await Patient.create({
             name:body.name,
-            birthday: body.birthday,
+            birthDate: body.birthDate,
             gender: body.gender,
             address: body.address,
-            phoneno: body.phoneno,
+            phoneNo: body.phoneNo,
             email: body.email,
+            image:body.image
         })
 
         if (patient) {
@@ -25,8 +26,6 @@ exports.AddPatient = async (request,response,next)=>{
             err.status = 400
             next(err)
         }
-
-
     } catch (err) {
         next(err)
     }

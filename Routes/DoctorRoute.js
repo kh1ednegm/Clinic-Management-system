@@ -3,33 +3,34 @@ const express=require('express');
 const router=express.Router();
 const multer = require('multer')
 const path = require('path')
+<<<<<<< HEAD
 const DoctorController = require('../Controllers/DoctorController')
 const auth = require('../middleware/auth')
 const DoctorValidator=require('../Validations/DoctorValidator')
+=======
 
+const DoctorController = require('../Controllers/DoctorController')
+const auth = require('../middleware/auth')
 
+const storage = multer.diskStorage({
+    destination:(request,file,cd)=>{
+        cd(null,"images")
+    },
+    filename: (request,file,cd)=>{
+        let fname = Date.now() + path.extname(file.originalname)
+        cd(null,fname)
+>>>>>>> ef554329513bff619805633294d50049e7d1926a
 
-    const storage = multer.diskStorage({
-        destination:(request,file,cd)=>{
-            cd(null,"images")
-        },
-        filename: (request,file,cd)=>{
-           let fname = Date.now() + path.extname(file.originalname)
-           cd(null,fname)
-    
-           request.body.image = fname
-        }
-    
-    })
-    
-    const upload = multer({storage:storage})
-    
+        request.body.image = fname
+    }
 
+})
     
-
+const upload = multer({storage:storage})
 
 
 //Add a new Doctor
+<<<<<<< HEAD
 router.post('/doctor/add',upload.single('image'),async(req,res,next)=>{
     try {
         await DoctorValidator.validateAsync({
@@ -51,6 +52,10 @@ router.post('/doctor/add',upload.single('image'),async(req,res,next)=>{
             error: err,
         });
     }
+=======
+router.post('/add',upload.single('image'),(req,res,next)=>{
+    DoctorController.AddDoctor(req,res,next)
+>>>>>>> ef554329513bff619805633294d50049e7d1926a
 });
 
 //Delete Doctor
@@ -67,6 +72,8 @@ router.get('/byId',(request,response,next)=>{
 router.get('/all',(request,response,next)=>{
     DoctorController.GetAllDoctors(request,response,next)
 })
+
+
 
 //Edit Doctor
 router.put('/edit',(request,response,next)=>{

@@ -9,6 +9,8 @@ const AppointmentRoute = require('./Routes/AppointmentRoute')
 const EmployeeRoute = require('./Routes/EmployeeRoute')
 const PatinetRoute = require('./Routes/PatientRoute')
 const PrescriptionRoute=require('./Routes/PrescriptionRoute')
+const SericeRoute = require('./Routes/ServiceRoute')
+
 const cors =require("cors")
 const server = express()
 const PORT = process.env.PORT || 8080;
@@ -45,7 +47,18 @@ server.use('/patient',PatinetRoute)
 
 server.use('/prescription',PrescriptionRoute)
 
+<<<<<<< HEAD
 server.use((error,request,response,next)=>{
     error.status = error.status || 500
     response.status(error.status).send(error.message)
+=======
+server.use('/service',SericeRoute)
+
+//"623b6bf0b966a872b34e655d"
+
+server.use((error,request,response,next)=>{
+    error.status = error.status || 500
+    response.status(error.status).send(error.message)
+    // console.log("error")
+>>>>>>> ef554329513bff619805633294d50049e7d1926a
 })
