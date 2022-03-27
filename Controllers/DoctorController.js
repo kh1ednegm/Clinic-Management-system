@@ -110,7 +110,7 @@ exports.GetAllDoctors = async (request,response,next)=>{
 
 } 
 
-// Edit Employee
+// Edit Doctor
 exports.EditDoctor = async (request,response,next)=>{
     try {
         let doctor = await Doctor.findByIdAndUpdate(request.body._id,{

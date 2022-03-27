@@ -4,6 +4,13 @@ module.exports = Joi.object({
   name: Joi.string()
     .min(3)
     .max(30)
+    .custom((value,helper)=>{
+      for(let i=0;i<value.length;i++){
+        if(value[i]-'0'<=9&&value[i]-'0'>=0){
+          return helper.message(`Name doesn't allow numbers`)
+        }
+      }
+    })
     .required(),
   birthday: Joi.date().min('1-1-1900')
     .raw()

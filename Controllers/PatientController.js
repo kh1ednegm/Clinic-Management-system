@@ -52,7 +52,7 @@ exports.GetAllPatients = async (request,response,next)=>{
 exports.GetPatientsByName = async (request,response,next)=>{
     let body = request.body
 
-    let patients = await find({name:body.name})
+    let patients = await Patient.find({name:body.name})
     
     if (patients) {
         response.status(200).send({message:"OK",data:patients})
@@ -68,7 +68,7 @@ exports.GetPatientById = async (request,response,next)=>{
 
     let body = request.body
 
-    let patient = await findById(body._id)
+    let patient = await Patient.findById(body._id)
     
     if (patient) {
         response.status(200).send({message:"OK",data:patient})
