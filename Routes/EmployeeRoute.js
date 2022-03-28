@@ -68,6 +68,7 @@ router.get('/all', (request, response, next) => {
 })
 
 router.put('/edit', async(request, response, next) => {
+    console.log(request.body);
     try {
         if (request.body['password']) {
             await EmployeeValidator.validateAsync({
@@ -95,6 +96,7 @@ router.put('/edit', async(request, response, next) => {
         }
         EmployeeController.EditEmployee(request, response, next)
     } catch (err) {
+        console.log(err);
         response.status(400).json({
             message: err['details'][0]['message'],
         });
