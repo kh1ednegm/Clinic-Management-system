@@ -24,6 +24,7 @@ const upload = multer({ storage: storage })
 
 router.post('/add', upload.single('image'), async (request, response, next) => {
     try {
+        request.body['phoneNo']=request.body['phoneNo'].toString();
         await PatientValidator.validateAsync({
             name: request.body['name'],
             birthDate: request.body['birthDate'],
@@ -57,6 +58,7 @@ router.get('/byName', (request, response, next) => {
 
 router.put('/edit', async(request, response, next) => {
     try {
+        request.body['phoneNo']=request.body['phoneNo'].toString();
         await PatientValidator.validateAsync({
             name: request.body['name'],
             birthDate: request.body['birthDate'],
