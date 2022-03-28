@@ -40,8 +40,7 @@ router.post('/add', upload.single('image'), async (req, res, next) => {
     }
     catch (err) {
         res.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })
@@ -80,8 +79,7 @@ router.put('/edit', async(request, response, next) => {
         DoctorController.EditDoctor(request, response, next)
     } catch (err) {
         res.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })

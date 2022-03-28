@@ -54,8 +54,7 @@ router.post('/add', upload.single('image'), async (request, response, next) => {
         EmployeeController.AddEmployee(request, response, next)
     } catch (err) {
         response.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })
@@ -97,8 +96,7 @@ router.put('/edit', async(request, response, next) => {
         EmployeeController.EditEmployee(request, response, next)
     } catch (err) {
         response.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })
