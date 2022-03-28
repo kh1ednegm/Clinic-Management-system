@@ -14,20 +14,20 @@ exports.AddDoctor = async (request, response,next) => {
         
 
         let doctor = await Doctor.create({
-            'name': request.body['name'],
-            'birthday': request.body['birthday'],
-            'gender': request.body['gender'],
-            'address': request.body['address'],
-            'phoneno': request.body['phoneno'],
-            'specialisation': request.body['specialisation'],
-            'image':request.body['image']
+            'doctorName': request.body['doctorName'],
+            'doctorBirthDate': request.body['doctorBirthDate'],
+            'doctorGender': request.body['doctorGender'],
+            'doctorAddress': request.body['doctorAddress'],
+            'doctorPhoneNumber': request.body['doctorPhoneNumber'],
+            'doctorSpecialization': request.body['doctorSpecialization'],
+            'doctorImage':request.body['doctorImage']
         })
         if(doctor){
 
             let hashedpassword = await bcrypt.hash(request.body.password,await bcrypt.genSalt(10))
             try {
                 let user = await User.create({
-                    'email': request.body['email'],
+                    'email': request.body['doctorEmail'],
                     'password': hashedpassword,
                     'userType': 'doctor',
                     'UserID': doctor._id,
@@ -38,7 +38,7 @@ exports.AddDoctor = async (request, response,next) => {
                     }
 
             } catch (e) {
-                fs.unlinkSync(`images/${doctor.image}`)
+                fs.unlinkSync(`images/${doctor.doctorImage}`)
                 await Doctor.findByIdAndDelete(doctor._id)
                 let err = new Error("Email already exists")
                 err.status = 400
@@ -114,10 +114,10 @@ exports.GetAllDoctors = async (request,response,next)=>{
 exports.EditDoctor = async (request,response,next)=>{
     try {
         let doctor = await Doctor.findByIdAndUpdate(request.body._id,{
-            'name': request.body['name'],
-            'address': request.body['address'],
-            'phoneno': request.body['phoneno'],
-            'specialisation': request.body['specialisation']
+            'doctorName': request.body['doctorName'],
+            'doctorAddress': request.body['doctorAddress'],
+            'doctorPhoneNumber': request.body['doctorPhoneNumber'],
+            'doctorSpecialization': request.body['doctorSpecialization']
         })
         if (doctor) {
             response.status(200).send({message:"OK"})

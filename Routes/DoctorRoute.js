@@ -13,8 +13,8 @@ const storage = multer.diskStorage({
     },
     filename: (request, file, cd) => {
         let fname = Date.now() + path.extname(file.originalname)
-        cd(null, fname)
-        request.body.image = fname
+        cd(null,fname)
+        request.body.doctorImage = fname
     }
 
 })
@@ -26,15 +26,16 @@ const upload = multer({ storage: storage })
 router.post('/add', upload.single('image'), async (req, res, next) => {
     try {
         await DoctorValidator.validateAsync({
-            name: req.body['name'],
-            birthday: req.body['birthday'],
-            gender: req.body['gender'],
-            address: req.body['address'],
-            phoneno: req.body['phoneno'],
-            specialisation: req.body['specialisation'],
-            image: req.body['image'].toString(),
-            email: req.body['email'],
-            password: req.body['password']
+
+            doctorName:req.body['doctorName'],
+            doctorBirthDate:req.body['doctorBirthDate'],
+            doctorGender:req.body['doctorGender'],
+            doctorAddress:req.body['doctorAddress'],
+            doctorPhoneNumber:req.body['doctorPhoneNumber'],
+            doctorSpecialization:req.body['doctorSpecialization'],
+            doctorImage:req.body['doctorImage'].toString(),
+            doctorEmail:req.body['doctorEmail'],
+            password:req.body['password']
         });
         DoctorController.AddDoctor(req, res, next)
     }
@@ -67,15 +68,15 @@ router.get('/all', (request, response, next) => {
 router.put('/edit', async(request, response, next) => {
     try {
         await DoctorValidator.validateAsync({
-            name: req.body['name'],
-            birthday: req.body['birthday'],
-            gender: req.body['gender'],
-            address: req.body['address'],
-            phoneno: req.body['phoneno'],
-            specialisation: req.body['specialisation'],
-            image: req.body['image'].toString(),
-            email: req.body['email'],
-            password: req.body['password']
+            doctorName:req.body['doctorName'],
+            doctorBirthDate:req.body['doctorBirthDate'],
+            doctorGender:req.body['doctorGender'],
+            doctorAddress:req.body['doctorAddress'],
+            doctorPhoneNumber:req.body['doctorPhoneNumber'],
+            doctorSpecialization:req.body['doctorSpecialization'],
+            doctorImage:req.body['doctorImage'].toString(),
+            doctorEmail:req.body['doctorEmail'],
+            password:req.body['password']
         });
         DoctorController.EditDoctor(request, response, next)
     } catch (err) {
