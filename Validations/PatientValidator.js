@@ -6,7 +6,7 @@ module.exports = Joi.object({
         .max(30)
         .custom((value,helper)=>{
             for(let i=0;i<value.length;i++){
-              if(value[i]-'0'<=9&&value[i]-'0'>=0){
+              if(value[i]-'0'<=9&&value[i]-'0'>=0&&value[i]!=' '){
                 return helper.message(`Name doesn't allow numbers`)
               }
             }
