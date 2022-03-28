@@ -3,13 +3,13 @@ const mongoose = require('mongoose')
 
 
 const Doctor = new mongoose.Schema({
-    name:{type:String,required:true},
-    birthday:{type:Date,required:true},
-    gender:{type:String,enum:["m","f"],required:true},
-    address:{type:String},
-    phoneno:{type:Number,required:true},
-    specialisation:{type:String,required:true},
-    image:{type:String}
+    doctorName:{type:String,required:true},
+    doctorBirthDate:{type:Date,required:true},
+    doctorGender:{type:String,enum:["Male","Female"],required:true},
+    doctorAddress:{type:String},
+    doctorPhoneNumber:{type:String,required:true},
+    doctorSpecialization:{type:String,required:true},
+    doctorImage:{type:String}
 })
 
 

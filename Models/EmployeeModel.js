@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 const Employee = new mongoose.Schema({
-    name:{type:String,required:true},
-    birthday:{type:Date,required:true},
-    gender:{type:String,enum:["m","f"],required:true},
-    address:{type:String},
-    phoneno:{type:Number,required:true},
-    emop_role:{type:String,enum:['receptionist', 'worker', 'nurse'],required:true},
-    image:{type:String}
+    empName:{type:String,required:true},
+    empBirthDate:{type:Date,required:true},
+    empGender:{type:String,enum:["Male","Female"],required:true},
+    empAddress:{type:String},
+    empPhoneNumber:{type:String,required:true},
+    empRole:{type:String,enum:['Receptionist', 'Worker', 'Nurse'],required:true},
+    empImage:{type:String}
 })
 
 
