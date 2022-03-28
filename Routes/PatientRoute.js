@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
         let fname = Date.now() + path.extname(file.originalname)
         cd(null, fname)
 
-        request.body.image = fname
+        request.body.image = `images/${fname}`
     }
 
 })
