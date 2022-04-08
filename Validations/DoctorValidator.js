@@ -6,7 +6,7 @@ module.exports = Joi.object({
     .max(30)
     .custom((value,helper)=>{
       for(let i=0;i<value.length;i++){
-        if(value[i]-'0'<=9&&value[i]-'0'>=0){
+        if(value[i]-'0'<=9&&value[i]-'0'>=0&&value[i]!=' '){
           return helper.message(`Name doesn't allow numbers`)
         }
       }
@@ -39,9 +39,15 @@ module.exports = Joi.object({
   })
 ,
   specialisation: Joi.string()
-    .alphanum()
-    .min(6)
+    .min(3)
     .max(30)
+    .custom((value,helper)=>{
+      for(let i=0;i<value.length;i++){
+        if(value[i]-'0'<=9&&value[i]-'0'>=0&&value[i]!=' '){
+          return helper.message(`specialisation doesn't allow numbers`)
+        }
+      }
+    })
     .required(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),

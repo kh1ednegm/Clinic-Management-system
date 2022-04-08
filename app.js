@@ -10,7 +10,7 @@ const AppointmentRoute = require('./Routes/AppointmentRoute')
 const EmployeeRoute = require('./Routes/EmployeeRoute')
 const PatinetRoute = require('./Routes/PatientRoute')
 const PrescriptionRoute=require('./Routes/PrescriptionRoute')
-const SericeRoute = require('./Routes/ServiceRoute')
+const ServiceRoute = require('./Routes/ServiceRoute')
 
 const cors =require("cors")
 const server = express()
@@ -38,6 +38,8 @@ server.use(bodyParser.json())
 
  
 server.use("/images", express.static(path.join("/images")));  
+
+
 server.use('',LoginRoute)
 
 server.use('/doctor',DoctorRoute);
@@ -50,7 +52,7 @@ server.use('/patient',PatinetRoute)
 
 server.use('/prescription',PrescriptionRoute)
 
-server.use('/service',SericeRoute)
+server.use('/service',ServiceRoute)
 
 server.use((error,request,response,next)=>{
     error.status = error.status || 500
