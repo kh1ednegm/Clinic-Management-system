@@ -19,8 +19,7 @@ router.post('/add', async (request, response, next) => {
         PrescriptionsController.AddPrescription(request, response, next)
     } catch (err) {
         response.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })
@@ -40,8 +39,7 @@ router.put('/edit', async(request, response, next) => {
         PrescriptionsController.EditPrescription(request, response, next)
     } catch (err) {
         response.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })

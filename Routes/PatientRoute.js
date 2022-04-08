@@ -24,6 +24,7 @@ const upload = multer({ storage: storage })
 
 router.post('/add', upload.single('image'), async (request, response, next) => {
     try {
+        request.body['phoneNo']=request.body['phoneNo'].toString();
         await PatientValidator.validateAsync({
             name: request.body['name'],
             birthDate: request.body['birthDate'],
@@ -37,8 +38,7 @@ router.post('/add', upload.single('image'), async (request, response, next) => {
     } catch (err) {
         console.log(err);
         response.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })
@@ -58,6 +58,7 @@ router.get('/byName', (request, response, next) => {
 
 router.put('/edit', async(request, response, next) => {
     try {
+        request.body['phoneNo']=request.body['phoneNo'].toString();
         await PatientValidator.validateAsync({
             name: request.body['name'],
             birthDate: request.body['birthDate'],
@@ -71,8 +72,7 @@ router.put('/edit', async(request, response, next) => {
     } catch (err) {
         console.log(err);
         response.status(400).json({
-            message: 'Validation error!',
-            error: err,
+            message: err['details'][0]['message'],
         });
     }
 })
