@@ -80,7 +80,7 @@ router.put('/edit', async(request, response, next) => {
         });
         DoctorController.EditDoctor(request, response, next)
     } catch (err) {
-        res.status(400).json({
+        response.status(400).json({
             message: err['details'][0]['message'],
         });
     }
