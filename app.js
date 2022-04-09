@@ -37,7 +37,7 @@ server.use(morgan(":url :method"))
 server.use(bodyParser.json())
 
  
-server.use("/images", express.static(path.join("/images")));  
+server.use("/images", express.static(path.join("./images")));  
 server.use('',LoginRoute)
 
 server.use('/doctor',DoctorRoute);
