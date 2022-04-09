@@ -24,7 +24,6 @@ const upload = multer({ storage: storage })
 
 router.post('/add', upload.single('image'), async (request, response, next) => {
     try {
-        request.body['phoneno']=request.body['phoneno'].toString();
         if (request.body['emop_role']==='receptionist') {
             if(!request.body['password']){
                 request.body['password']='';
@@ -71,7 +70,6 @@ router.get('/all', (request, response, next) => {
 router.put('/edit', async(request, response, next) => {
     console.log(request.body);
     try {
-        request.body['phoneno']=request.body['phoneno'].toString();
         if (request.body['password']) {
             await EmployeeValidator.validateAsync({
                 name: request.body['name'],
@@ -108,12 +106,5 @@ router.put('/edit', async(request, response, next) => {
 router.delete('/delete', (request, response, next) => {
     EmployeeController.DeleteEmployee(request, response, next)
 })
-
-
-
-
-
-
-
 
 module.exports = router

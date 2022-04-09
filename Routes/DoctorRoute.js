@@ -66,17 +66,16 @@ router.get('/all', (request, response, next) => {
 //Edit Doctor
 router.put('/edit', async(request, response, next) => {
     try {
-        request.body['phoneno']=request.body['phoneno'].toString();
         await DoctorValidator.validateAsync({
-            name: req.body['name'],
-            birthday: req.body['birthday'],
-            gender: req.body['gender'],
-            address: req.body['address'],
-            phoneno: req.body['phoneno'],
-            specialisation: req.body['specialisation'],
-            image: req.body['image'].toString(),
-            email: req.body['email'],
-            password: req.body['password']
+            name: request.body['name'],
+            birthday: request.body['birthday'],
+            gender: request.body['gender'],
+            address: request.body['address'],
+            phoneno: request.body['phoneno'],
+            specialisation: request.body['specialisation'],
+            image: request.body['image'].toString(),
+            email: request.body['email'],
+            password: request.body['password']
         });
         DoctorController.EditDoctor(request, response, next)
     } catch (err) {
