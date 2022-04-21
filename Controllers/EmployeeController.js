@@ -134,12 +134,15 @@ exports.GetEmployeeByID = async (request,response,next)=>{
 
 
     try {
-        
-
-
+    
         let body = request.body
 
         let emp = await Employee.findById(body._id)
+        if(emp.emop_role=='receptionist'){
+            let user=await User.findById(user['_id']);
+            emp['email']=user['email'];
+            emp['password']=user['password'];
+        }
 
         if(emp){
             response.status(200).send({message:"OK",data:emp})

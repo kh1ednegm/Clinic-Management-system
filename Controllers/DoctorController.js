@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const fs = require('fs')
 
 const Doctor = require('../Models/DoctorModel');
-const User = require('../Models/UserModel');
+const User=require('../Models/UserModel');
 
 
 //Add Doctor
@@ -83,6 +83,9 @@ exports.DeleteDoctor = async (request,response,next)=>{
 exports.GetDoctorByID = async (request,response,next)=>{
 
         let doctor = await Doctor.findById(request.body._id)
+        let user=await User.findById(doctor['_id']);
+        doctor['email']=user['email'];
+        doctor['password']=user['password'];
 
         if(doctor){
             response.status(200).send({message:"OK",data:doctor})
