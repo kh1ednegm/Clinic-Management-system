@@ -139,7 +139,7 @@ exports.GetEmployeeByID = async (request,response,next)=>{
 
         let emp = await Employee.findById(body._id)
         if(emp.emop_role=='receptionist'){
-            let user=await User.findById(user['_id']);
+            let user=await User.find({'UserID':request.body._id});
             emp['email']=user['email'];
             emp['password']=user['password'];
         }
