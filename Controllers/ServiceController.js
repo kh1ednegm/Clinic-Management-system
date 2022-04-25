@@ -62,6 +62,16 @@ exports.GetServicesByDoctorId = async (request, response,next)=>{
         response.status(400).send({error:"No services are available"})
 }
 
+exports.GetServiceById = async (request, response,next)=>{
+    let service = await Service.findById(request.body._id)
+
+    if(service){
+        response.status(200).send({data:service})
+    }
+    else{
+        response.status(400).send({error:"Invalid ID"})
+    }
+}
 
 // For admin
 exports.EditService = async (request,response,next)=>{

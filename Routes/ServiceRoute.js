@@ -26,6 +26,10 @@ router.get('/all',ServiceController.GetAllServices)
 
 router.get('/doctor', ServiceController.GetServicesByDoctorId)
 
+router.get('/id',ServiceController.GetServiceById)
+
+
+
 router.put('/edit',async (request, response, next) =>{
     try{
         console.log(request.body)
@@ -41,6 +45,8 @@ router.put('/edit',async (request, response, next) =>{
         });
     }
 })
+
+
 
 
 router.delete('/delete',ServiceController.DeleteService)
