@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const fs = require('fs')
-
 const Doctor = require('../Models/DoctorModel');
-const User = require('../Models/UserModel');
+const User=require('../Models/UserModel');
 
 
 //Add Doctor
@@ -81,8 +80,11 @@ exports.DeleteDoctor = async (request,response,next)=>{
 
 // Get Doctor by ID
 exports.GetDoctorByID = async (request,response,next)=>{
-
+        console.log(request.body);
         let doctor = await Doctor.findById(request.body._id)
+        let user=await User.find({'UserID':request.body._id});
+        doctor['email']=user['email'];
+        doctor['password']=user['password'];
 
         if(doctor){
             response.status(200).send({message:"OK",data:doctor})

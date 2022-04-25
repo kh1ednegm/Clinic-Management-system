@@ -7,7 +7,6 @@ const ServiceValidator=require('../Validations/ServiceValidation')
 
 router.post('/add',async (request, response, next) =>{
     try{
-        console.log(request.body)
         await ServiceValidator.validateAsync({
             name:request.body['name'],
             price:request.body['price'],

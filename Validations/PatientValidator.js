@@ -20,7 +20,7 @@ module.exports = Joi.object({
         .min(8)
         .max(50)
         .required(),
-    phoneNo: Joi.string().length(10).regex(/^\d+$/),
+    phoneNo: Joi.string().length(11).regex(/^\d+$/),
     image: Joi
         .string()
         .custom((value, helper) => {
