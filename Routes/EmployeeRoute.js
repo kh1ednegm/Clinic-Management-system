@@ -47,7 +47,7 @@ router.post('/add', upload.single('image'), async (request, response, next) => {
                 address: request.body['address'],
                 phoneno: request.body['phoneno'],
                 emop_role: request.body['emop_role'],
-                image: request.body['image'].toString(),
+                image: request.body['image'],
                 email: request.body['email'],
             });
         }
@@ -70,7 +70,7 @@ router.get('/all', (request, response, next) => {
 router.put('/edit', async(request, response, next) => {
     console.log(request.body);
     try {
-        if (request.body['password']) {
+        if (request.body['emop_role'] === 'receptionist') {
             await EmployeeValidator.validateAsync({
                 name: request.body['name'],
                 birthday: request.body['birthday'],
@@ -80,7 +80,6 @@ router.put('/edit', async(request, response, next) => {
                 emop_role: request.body['emop_role'],
                 image: request.body['image'].toString(),
                 email: request.body['email'],
-                password: request.body['password']
             });
         } else {
             await EmployeeValidator.validateAsync({
@@ -91,7 +90,6 @@ router.put('/edit', async(request, response, next) => {
                 phoneno: request.body['phoneno'],
                 emop_role: request.body['emop_role'],
                 image: request.body['image'].toString(),
-                email: request.body['email'],
             });
         }
         EmployeeController.EditEmployee(request, response, next)

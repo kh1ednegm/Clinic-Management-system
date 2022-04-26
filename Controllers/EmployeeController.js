@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 
 const Employee = require('../Models/EmployeeModel')
 const User = require('../Models/UserModel')
-const EmployeeValidator = require('../Validations/EmployeeValidator')
 
 
 // Create Employee
@@ -12,12 +11,6 @@ exports.AddEmployee = async (request,response,next)=>{
 
 
     let body = request.body
-
-    let {value, error} = EmployeeValidator(body)
-   
-
-    console.log(error)
-    console.log(value)
     try {
         
         let emp = await Employee.create({
@@ -88,8 +81,9 @@ exports.EditEmployee = async (request,response,next)=>{
             address:body.address,
             phoneno:body.phoneno,
         })
-
+        
         if (emp) {
+            
             response.status(200).send({message:"OK"})
         }
         else{

@@ -42,6 +42,6 @@ module.exports = Joi.object({
     ,
     emop_role: Joi.string().valid('receptionist', 'worker', 'nurse').required(),
     email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-    password: Joi.string().min(8).alphanum().optional()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).optional(),
+    //password: Joi.string().min(8).alphanum().optional()
 });

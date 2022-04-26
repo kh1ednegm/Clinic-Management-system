@@ -80,19 +80,31 @@ exports.DeleteDoctor = async (request,response,next)=>{
 
 // Get Doctor by ID
 exports.GetDoctorByID = async (request,response,next)=>{
-        console.log(request.body);
         let doctor = await Doctor.findById(request.body._id)
-        let user=await User.find({'UserID':request.body._id});
-        doctor['email']=user['email'];
-        doctor['password']=user['password'];
+        let user=await User.findOne({UserID:request.body._id});
+       // console.log(user)
 
-        if(doctor){
-            response.status(200).send({message:"OK",data:doctor})
-        }
-        else{
-            let err = new Error("Doctor is Not Found")
-            err.status = 400
-            next(err)
+        if(user){
+            if(doctor){
+                var data = {
+                    name: doctor.name,
+                    birthday: doctor.birthday,
+                    gender: doctor.gender,
+                    address: doctor.address,
+                    phoneno: doctor.phoneno,
+                    specialisation: doctor.specialisation,
+                    image: doctor.image,
+                    _id:doctor._id,
+                    email:user.email,
+                }
+                
+                response.status(200).send({message:"OK",data:data})
+            }
+            else{
+                let err = new Error("Doctor is Not Found")
+                err.status = 400
+                next(err)
+            }
         }
 
 }
@@ -122,6 +134,9 @@ exports.EditDoctor = async (request,response,next)=>{
             'specialisation': request.body['specialisation']
         })
         if (doctor) {
+            let user = await User.findByIdAndUpdate({UserID:request.body._id},{
+                email:request.body.email
+            })
             response.status(200).send({message:"OK"})
         }
         else{

@@ -26,6 +26,7 @@ const upload = multer({ storage: storage })
 router.post('/add', upload.single('image'), async (req, res, next) => {
     try {
         req.body['phoneno']=req.body['phoneno'].toString();
+        console.log(req.body['image']);
         await DoctorValidator.validateAsync({
             name: req.body['name'],
             birthday: req.body['birthday'],
@@ -33,15 +34,16 @@ router.post('/add', upload.single('image'), async (req, res, next) => {
             address: req.body['address'],
             phoneno: req.body['phoneno'],
             specialisation: req.body['specialisation'],
-            image: req.body['image'].toString(),
+            image: req.body['image'],
             email: req.body['email'],
             password: req.body['password']
         });
         DoctorController.AddDoctor(req, res, next)
     }
     catch (err) {
+        console.log(err)
         res.status(400).json({
-            message: err['details'][0]['message'],
+            message: err,
         });
     }
 })
@@ -75,7 +77,6 @@ router.put('/edit', async(request, response, next) => {
             specialisation: request.body['specialisation'],
             image: request.body['image'].toString(),
             email: request.body['email'],
-            password: request.body['password']
         });
         DoctorController.EditDoctor(request, response, next)
     } catch (err) {

@@ -30,20 +30,15 @@ mongoose.connect("mongodb://localhost:27017/CMS").then(()=>{
     console.log("Conncetion faild")
 })
 
+
 server.use(cors())
 mongoose.Promise=global.Promise;
 
 server.use(morgan(":url :method"))
 server.use(bodyParser.json())
 
- 
-<<<<<<< HEAD
-server.use("/images", express.static(path.join("/images")));  
-
-
-=======
+  
 server.use("/images", express.static(path.join("./images")));  
->>>>>>> 40e382ea72928c63cf4cfc8e781d062fe5696bc6
 server.use('',LoginRoute)
 
 server.use('/doctor',DoctorRoute);
